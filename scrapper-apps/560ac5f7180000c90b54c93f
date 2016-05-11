@@ -1,5 +1,3 @@
-MongoDB shell version: 3.2.6
-connecting to: localhost/app-eai
 {
 	"value" : "[\"br.ufc.appeai\",\"com.google.android.gms\",\"com.google.android.inputmethod.latin\",\"com.google.android.gms.persistent\",\"com.google.android.googlequicksearchbox\",\"com.android.vending\",\"com.whatsapp\",\"br.ufc.appeai:service\",\"com.facebook.orca\",\"com.facebook.katana\"]"
 }
