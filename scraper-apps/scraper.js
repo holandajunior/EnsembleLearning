@@ -1,11 +1,14 @@
 var gplay = require('google-play-scraper');
 var fs = require('fs');
 
+var appSet = new Set();
+
 var lineReader = require('readline').createInterface({
   input: fs.createReadStream('teste')
 });
 
 var wStream = fs.createWriteStream("handledApps.csv", { flags : 'w' });
+
 
 lineReader.on('line', function (line){
   if(line != '}' && line != '{'){
@@ -20,17 +23,9 @@ lineReader.on('line', function (line){
     console.log(vals[1].replace(pattern, ""));
     console.log(apps);
 
-     apps.map(function(collectedApp){
 
-         gplay.app({appId: collectedApp})
-          .then(function(app){
-            wStream.write(collectedApp + " " +  app.genreId + "\n");
-          })
-          .catch(function(e){
-            console.log('There was an error fetching the application!');
-          });
-
-
+     apps.forEach(function(collectedApp){
+       appSet.add(collectedApp);
      });
 
 
@@ -38,4 +33,24 @@ lineReader.on('line', function (line){
 
 
 
-});
+  });
+
+  lineReader.on('close', function(){
+    console.log("Total of apps: " + appSet.size);
+    appSet.forEach(function(collectedApp){
+
+        gplay.app({appId: collectedApp})
+         .then(function(app){
+           //wStream.write(collectedApp + " " +  app.genreId + "\n");
+           console.log(collectedApp + " " +  app.genreId);
+         })
+         .catch(function(e){
+           console.log(collectedApp + ' = There was an error fetching the application!');
+         });
+
+
+    });
+
+
+
+  });
