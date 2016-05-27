@@ -11,9 +11,10 @@ var wStream = fs.createWriteStream("handledApps.csv", { flags : 'w' });
 
 
 lineReader.on('line', function (line){
-  if(line != '}' && line != '{'){
-    var vals = line.split(" : ");
 
+  if(line.indexOf("value") > -1){
+
+    var vals = line.split(":");
     var pattern = /[\"\\\[\]]/g;
 
     var apps = vals[1].replace(pattern, "").split(",");
@@ -41,8 +42,8 @@ lineReader.on('line', function (line){
 
         gplay.app({appId: collectedApp})
          .then(function(app){
-           //wStream.write(collectedApp + " " +  app.genreId + "\n");
-           console.log(collectedApp + " " +  app.genreId);
+           wStream.write(collectedApp + " " +  app.genreId + "\n");
+           //console.log(collectedApp + " " +  app.genreId);
          })
          .catch(function(e){
            console.log(collectedApp + ' = There was an error fetching the application!');
